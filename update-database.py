@@ -3,7 +3,6 @@
 import sys
 import os
 import datetime
-from tkinter import N
 from dateutil.relativedelta import relativedelta
 import requests
 import numpy as np
@@ -13,7 +12,7 @@ import logging
 
 import secret_config as CONFIG
 
-locale.setlocale(locale.LC_TIME, "de_DE")
+locale.setlocale(locale.LC_TIME, "de_DE.UTF-8")
 logging.basicConfig(
   format='%(asctime)s [%(levelname)s] %(message)s',
   datefmt='%d-%m-%y %H:%M:%S',

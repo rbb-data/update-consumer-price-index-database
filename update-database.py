@@ -29,7 +29,7 @@ API_URL = "https://europe-west3-rbb-data-inflation.cloudfunctions.net/consumer-p
 
 
 def download(url, params, filename):
-  logging.info('GET ' + url + "?" + "&".join([f"{k}={v}" for k, v in params.items()]))
+  logging.info('GET ' + url)
   
   response = requests.get(url, params=params)
   if not response.ok:
@@ -51,8 +51,8 @@ def download(url, params, filename):
 
 def parse_raw_data(filename):
   COLUMNS = {
-    "3_Auspraegung_Code": "item_id",
-    "3_Auspraegung_Label": "item_name",
+    "3_Auspraegung_Code": "id",
+    "3_Auspraegung_Label": "name",
     "Zeit": "year",
     "2_Auspraegung_Label": "month",
     "PREIS1__Verbraucherpreisindex__2015=100": "value"
@@ -73,7 +73,7 @@ def parse_raw_data(filename):
   df["value"] = pd.to_numeric(df.value, errors='coerce')
 
   # re-order
-  df = df[["item_id", "item_name", "year", "month", "value"]]
+  df = df[["id", "name", "year", "month", "value"]]
 
   return df
 
@@ -84,7 +84,7 @@ def main():
 
   response = requests.get(
     API_URL,
-    params={ "mode": "most-recent-entry", "item_id": "CC13-0111101100" }
+    params={ "mode": "most-recent-entry", "id": "CC13-0111101100" }
   )
   if not response.ok:
     logging.error("GET request failed: " + response.url)

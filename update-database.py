@@ -65,7 +65,7 @@ def parse_raw_data(filename):
 
     # read data and rename relevant columns
     df = pd.read_csv(filename, sep=";")
-    df = df[COLUMNS].rename(columns=COLUMNS)
+    df = df[COLUMNS.keys()].rename(columns=COLUMNS)
 
     # transform months into numerical format, e.g. Februar -> 2
     df["month"] = df.month.apply(
@@ -137,18 +137,19 @@ def main():
         sys.exit(0)
 
     updated_records = df_updated.replace({np.nan: None}).to_dict("records")
+    print(updated_records)
 
-    logging.info(f"POST {API_URL} ({len(updated_records)} items)")
-    post_response = requests.post(
-        API_URL,
-        params={"table": "consumer-price-index"},
-        json=updated_records,
-        headers={"Authorization": "Bearer " + CONFIG.API_TOKEN},
-    )
+    # logging.info(f"POST {API_URL} ({len(updated_records)} items)")
+    # post_response = requests.post(
+    #     API_URL,
+    #     params={"table": "consumer-price-index"},
+    #     json=updated_records,
+    #     headers={"Authorization": "Bearer " + CONFIG.API_TOKEN},
+    # )
 
-    if not post_response.ok:
-        logging.error(f"POST request failed: {post_response.status_code}")
-        sys.exit(1)
+    # if not post_response.ok:
+    #     logging.error(f"POST request failed: {post_response.status_code}")
+    #     sys.exit(1)
 
 
 if __name__ == "__main__":

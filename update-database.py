@@ -20,7 +20,8 @@ logging.basicConfig(
     level=logging.INFO,
 )
 
-IDS_FILENAME = "warenkorb_ids.txt"
+IDS_FILENAME = "data/warenkorb_ids.txt"
+GENESIS_FILENAME = "data/genesis_tmp.csv"
 
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
 IDS_PATH = os.path.join(SCRIPT_DIR, IDS_FILENAME)
@@ -129,7 +130,7 @@ def main():
     }
 
     # download data from genesis as csv file
-    filename = os.path.join(SCRIPT_DIR, "tmp.csv")
+    filename = os.path.join(SCRIPT_DIR, GENESIS_FILENAME)
     download_response = download(
         GENESIS_API_URL, params=genesis_query_params, filename=filename
     )

@@ -32,11 +32,15 @@ API_URL = "https://europe-west3-rbb-data-inflation.cloudfunctions.net/consumer-p
 def download(url, params, filename):
     logging.info("GET " + url)
 
-    response = requests.get(url, params=params)
+    try:
+        response = requests.get(url, params=params)
+    except Exception as e:
+        return {"ok": False, "code": "request_failed", "message": str(e)}
+
     if not response.ok:
         return {"ok": False, "code": "request_failed", "message": response.status_code}
 
-    # in the case the request is invalid
+    # in case the request is invalid
     try:
         json_response = response.json()
         if json_response["Status"]["Code"] != 0:
@@ -90,14 +94,19 @@ def main():
     with open(IDS_PATH) as f:
         item_ids = [_id.strip() for _id in f.readlines()]
 
-    response = requests.get(
-        API_URL,
-        params={
-            "table": "consumer-price-index",
-            "mode": "most-recent-date",
-            "id": "CC13-0111101100",
-        },
-    )
+    try:
+        response = requests.get(
+            API_URL,
+            params={
+                "table": "consumer-price-index",
+                "mode": "most-recent-date",
+                "id": "CC13-0111101100",
+            },
+        )
+    except Exception as e:
+        logging.error("GET request failed: " + str(e))
+        sys.exit(1)
+
     if not response.ok:
         logging.error("GET request failed: " + response.url)
         sys.exit(1)

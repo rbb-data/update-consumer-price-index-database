@@ -108,7 +108,7 @@ def main():
         sys.exit(1)
 
     if not response.ok:
-        logging.error("GET request failed: " + response.url)
+        logging.error("GET request failed: " + str(response.url))
         sys.exit(1)
 
     most_recent_date = response.json()
@@ -134,7 +134,7 @@ def main():
         GENESIS_API_URL, params=genesis_query_params, filename=filename
     )
     if not download_response["ok"]:
-        logging.error("GET request failed: " + download_response["message"])
+        logging.error("GET request failed: " + str(download_response["message"]))
         sys.exit(1)
 
     # parse csv file and get updated data

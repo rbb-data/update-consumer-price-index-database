@@ -159,6 +159,10 @@ def update_database(event, context):
     df = parse_raw_data(GENESIS_FILENAME)
     df_updated = df[df.month >= next_month.month]
 
+    # clean up
+    if os.path.exists(GENESIS_FILENAME):
+        os.remove(GENESIS_FILENAME)
+
     if len(df_updated) == 0:
         logging.info("No new data available")
         return

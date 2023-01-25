@@ -3,3 +3,4 @@ secret*
 logs.txt
 __pycache__
 rbb-data-inflation-fc4113adea34.json
+*.local

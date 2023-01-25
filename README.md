@@ -8,12 +8,12 @@ The function `update_database` in `main.py` updates the [consumer price index da
 
 > **Note**
 >
-> Add the necessary credentials by downloading the key file that belongs to the service account `rbb-data-inflation@appspot.gserviceaccount.com` and store the downloaded file as `rbb-data-inflation-fc4113adea34.json`.
+> The function uses secret environment variables. Add `API_SECRET` (secret to post to the consumer price index API) and `GENESIS_PASSWORD` (password for Genesis API) to `.env.local` that is not checked into version control.
 
-Load environment variables from `.env`:
+Load environment variables from `.env` and `.env.local`:
 
 ```bash
-export $(cat .env | xargs)
+export $(cat .env .env.local | xargs)
 ```
 
 Install dependencies from `requirement.txt` and run the function:

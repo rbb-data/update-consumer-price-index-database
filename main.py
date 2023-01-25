@@ -7,9 +7,6 @@ import pandas as pd
 import requests
 from dateutil.relativedelta import relativedelta
 
-from google.cloud import secretmanager
-
-client = secretmanager.SecretManagerServiceClient()
 
 logging.basicConfig(
     format="%(asctime)s [%(levelname)s] %(message)s",
@@ -100,11 +97,6 @@ def parse_raw_data(filename):
     return df
 
 
-def access_secret(name):
-    response = client.access_secret_version(request={"name": name})
-    return response.payload.data.decode("UTF-8")
-
-
 def update_database(event, context):
     """Triggered from a message on a Cloud Pub/Sub topic."""
     # read warenkorb items to be requested from file
@@ -134,7 +126,7 @@ def update_database(event, context):
 
     genesis_query_params = {
         "username": os.environ["GENESIS_USERNAME"],
-        "password": access_secret(os.environ["GENESIS_PASSWORD"]),
+        "password": os.environ["GENESIS_PASSWORD"],
         "language": "de",
         "name": "61111-0006",
         "area": "all",
@@ -174,7 +166,7 @@ def update_database(event, context):
         os.environ["API_URL"],
         params={"table": "consumer-price-index"},
         json=updated_records,
-        headers={"Authorization": "Bearer " + access_secret(os.environ["API_SECRET"])},
+        headers={"Authorization": "Bearer " + os.environ["API_SECRET"]},
     )
 
     if not post_response.ok:

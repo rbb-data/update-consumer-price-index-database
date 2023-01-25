@@ -2,4 +2,3 @@ python-dateutil
 numpy
 pandas
 requests
-google-cloud-secret-manager
